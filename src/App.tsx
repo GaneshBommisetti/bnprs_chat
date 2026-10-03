@@ -151,7 +151,6 @@ function App() {
               element={(
                 <Dashboard
                   searchQuery={searchQuery}
-                  onSearch={setSearchQuery}
                   statusOptions={statusOptions}
                   selectedStatus={selectedStatus}
                   onStatusSelect={handleStatusSelect}

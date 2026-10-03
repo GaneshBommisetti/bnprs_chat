@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import { ArrowUpRight, CalendarDays, Check, ChevronRight, Clock3, FileText, MessageCircle, Paperclip, Plus, UsersRound, Video } from 'lucide-react'
+import { ArrowUpRight, CalendarDays, ChevronRight, Clock3, FileText, MessageCircle, Paperclip, UsersRound, Video } from 'lucide-react'
 import { Link, useNavigate } from 'react-router-dom'
 
 import { RemoteWorkToggle } from '../components/RemoteWorkToggle'
@@ -12,7 +12,6 @@ import './Dashboard.css'
 
 type DashboardProps = {
   searchQuery: string
-  onSearch: (value: string) => void
   statusOptions: UserStatus[]
   selectedStatus: string
   onStatusSelect: (value: string) => void
@@ -45,13 +44,8 @@ const followUps = [
   { title: 'Review reconciliation', detail: 'Settlement reconciliation · v4.xlsx', action: 'Open file', path: '/files', tone: 'green' },
 ]
 
-function initialsFor(name: string) {
-  return name.split(/\s+/).map((part) => part[0]).slice(0, 2).join('').toUpperCase()
-}
-
 export default function Dashboard({
   searchQuery,
-  onSearch,
   statusOptions,
   selectedStatus,
   onStatusSelect,
@@ -72,9 +66,6 @@ export default function Dashboard({
     .map((value) => String(value).padStart(2, '0')).join(':')
   const filteredConversations = useMemo(() => conversations.filter((conversation) =>
     `${conversation.name} ${conversation.message}`.toLowerCase().includes(searchQuery.toLowerCase()),
-  ), [searchQuery])
-  const filteredPeople = useMemo(() => [...atWorkEmployees, ...awayEmployees].filter((employee) =>
-    `${employee.name} ${employee.email}`.toLowerCase().includes(searchQuery.toLowerCase()),
   ), [searchQuery])
 
   useEffect(() => {
