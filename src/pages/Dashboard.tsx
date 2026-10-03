@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { ArrowUpRight, CalendarDays, ChevronRight, Clock3, ListFilter, MessageCircle, Paperclip, UsersRound, Video } from 'lucide-react'
 import { Link, useNavigate } from 'react-router-dom'
 
@@ -17,6 +17,7 @@ type DashboardProps = {
   onStatusSelect: (value: string) => void
   statusMenuOpen: boolean
   onStatusMenuToggle: () => void
+  onStatusMenuClose: () => void
   remoteWorkEnabled: boolean
   onRemoteWorkChange: (enabled: boolean) => void
   remoteWorkStartedAt: number | null
@@ -39,6 +40,7 @@ export default function Dashboard({
   onStatusSelect,
   statusMenuOpen,
   onStatusMenuToggle,
+  onStatusMenuClose,
   remoteWorkEnabled,
   onRemoteWorkChange,
   remoteWorkStartedAt,
@@ -48,6 +50,7 @@ export default function Dashboard({
   const navigate = useNavigate()
   const [currentTime, setCurrentTime] = useState(() => Date.now())
   const [unreadOnly, setUnreadOnly] = useState(false)
+  const statusMenuRef = useRef<HTMLDivElement>(null)
   const firstName = profileName === 'You' ? 'Ganesh' : profileName.split(/\s+/)[0]
   const today = new Intl.DateTimeFormat(undefined, { weekday: 'long', month: 'long', day: 'numeric' }).format(new Date())
   const elapsedSeconds = remoteWorkStartedAt === null ? 0 : Math.max(0, Math.floor((currentTime - remoteWorkStartedAt) / 1000))
@@ -64,6 +67,22 @@ export default function Dashboard({
     return () => window.clearInterval(intervalId)
   }, [remoteWorkEnabled, remoteWorkStartedAt])
 
+  useEffect(() => {
+    if (!statusMenuOpen) return
+    const closeOnOutsideClick = (event: PointerEvent) => {
+      if (event.target instanceof Node && !statusMenuRef.current?.contains(event.target)) onStatusMenuClose()
+    }
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') onStatusMenuClose()
+    }
+    document.addEventListener('pointerdown', closeOnOutsideClick)
+    document.addEventListener('keydown', closeOnEscape)
+    return () => {
+      document.removeEventListener('pointerdown', closeOnOutsideClick)
+      document.removeEventListener('keydown', closeOnEscape)
+    }
+  }, [onStatusMenuClose, statusMenuOpen])
+
   return (
     <div className="overview-page">
       <main className="overview-shell">
@@ -78,9 +97,9 @@ export default function Dashboard({
               <RemoteWorkToggle enabled={remoteWorkEnabled} onChange={onRemoteWorkChange} />
               {remoteWorkEnabled ? <span role="timer" aria-label={`Remote work elapsed time ${elapsedTime}`}><Clock3 size={13} /> {elapsedTime}</span> : null}
             </div>
-            <div className="overview-status-wrap">
-              <button className="overview-status" type="button" onClick={onStatusMenuToggle} aria-expanded={statusMenuOpen}>
-                <span className={selectedStatus === 'Available' ? 'presence-dot online' : 'presence-dot away'} />{selectedStatus}<span className="status-caret">⌄</span>
+            <div className="overview-status-wrap" ref={statusMenuRef}>
+              <button className="overview-status" type="button" onClick={onStatusMenuToggle} aria-expanded={statusMenuOpen} aria-label={`Work status: ${selectedStatus}`}>
+                <span className={`presence-dot status-${statusOptions.find((status) => status.label === selectedStatus)?.id ?? 'available'}`} aria-hidden="true" /><span>{selectedStatus}</span>
               </button>
               {statusMenuOpen ? <StatusMenu statuses={statusOptions} selectedStatus={selectedStatus} onSelect={onStatusSelect} /> : null}
             </div>
@@ -139,4 +158,3 @@ export default function Dashboard({
     </div>
   )
 }
-

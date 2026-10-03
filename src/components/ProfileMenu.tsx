@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react'
-import { LogOut, PanelLeftClose, PanelLeftOpen, Save, Trash2, Upload } from 'lucide-react'
+import { LogOut, Save, Trash2, Upload } from 'lucide-react'
 
 type ProfileMenuProps = {
   profileName: string
@@ -9,8 +9,6 @@ type ProfileMenuProps = {
   onProfilePhotoSave: (photo: string | null) => void
   onClose: () => void
   onLogout: () => void
-  sidebarCollapsed: boolean
-  onSidebarToggle: () => void
 }
 
 export function ProfileMenu({
@@ -21,8 +19,6 @@ export function ProfileMenu({
   onProfilePhotoSave,
   onClose,
   onLogout,
-  sidebarCollapsed,
-  onSidebarToggle,
 }: ProfileMenuProps) {
   const [name, setName] = useState(profileName)
   const [email, setEmail] = useState(profileEmail)
@@ -128,16 +124,7 @@ export function ProfileMenu({
       </form>
 
       <div className="mt-4 border-t border-[#e5e7eb] pt-3">
-        <button
-          type="button"
-          onClick={onSidebarToggle}
-          aria-expanded={!sidebarCollapsed}
-          className="flex w-full items-center gap-2 rounded-md px-2 py-2 text-left text-[12px] text-[#374151] hover:bg-[#fff7ed] hover:text-[#F2992F]"
-        >
-          {sidebarCollapsed ? <PanelLeftOpen size={15} /> : <PanelLeftClose size={15} />}
-          {sidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
-        </button>
-        <button type="button" onClick={onLogout} className="mt-2 flex w-full items-center gap-2 rounded-md px-2 py-2 text-left text-[12px] font-medium text-[#b42332] hover:bg-[#fff1f0]">
+        <button type="button" onClick={onLogout} className="flex w-full items-center gap-2 rounded-md px-2 py-2 text-left text-[12px] font-medium text-[#b42332] hover:bg-[#fff1f0]">
           <LogOut size={15} />
           Log out
         </button>

@@ -6,10 +6,6 @@ import { conversationChannels, pinnedChannels } from '../data/channels'
 import { atWorkEmployees, awayEmployees } from '../data/employees'
 import { inboxItems } from '../data/inbox'
 
-type ChatPageProps = {
-  sidebarCollapsed: boolean
-}
-
 type ChatMessage = {
   id: string
   sender: string
@@ -62,11 +58,25 @@ const messagesByChannel: Record<string, ChatMessage[]> = {
   ],
 }
 
-export default function ChatPage({ sidebarCollapsed }: ChatPageProps) {
-  const [searchParams] = useSearchParams()
+export default function ChatPage() {
+  const [searchParams, setSearchParams] = useSearchParams()
   const requestedContactId = searchParams.get('contact')
+  const requestedContactName = searchParams.get('name')
   const requestedChatId = searchParams.get('channel')
-  const directContact = [...atWorkEmployees, ...awayEmployees].find((employee) => employee.id === requestedContactId)
+  const requestedCall = searchParams.get('call')
+  const directContact = useMemo(() => (
+    [...atWorkEmployees, ...awayEmployees].find((employee) => employee.id === requestedContactId) ?? (
+      requestedContactId && requestedContactName
+        ? {
+          id: requestedContactId,
+          name: requestedContactName,
+          email: '',
+          status: 'offline' as const,
+          initials: requestedContactName.trim().split(/\s+/).slice(0, 2).map((part) => part[0]).join('').toUpperCase(),
+        }
+        : undefined
+    )
+  ), [requestedContactId, requestedContactName])
   const contactChatId = directContact ? `employee-${directContact.id}` : null
   const allChats = useMemo(() => [
     ...pinnedChannels,
@@ -87,6 +97,24 @@ export default function ChatPage({ sidebarCollapsed }: ChatPageProps) {
   const [callStartedAt, setCallStartedAt] = useState<number | null>(null)
   const [callNow, setCallNow] = useState(() => Date.now())
   const attachmentInput = useRef<HTMLInputElement>(null)
+  const moreMenuRef = useRef<HTMLDivElement>(null)
+  const autoCallKeyRef = useRef<string | null>(null)
+
+  useEffect(() => {
+    if (!moreMenuOpen) return
+    const closeOnOutsideClick = (event: PointerEvent) => {
+      if (event.target instanceof Node && !moreMenuRef.current?.contains(event.target)) setMoreMenuOpen(false)
+    }
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setMoreMenuOpen(false)
+    }
+    document.addEventListener('pointerdown', closeOnOutsideClick)
+    document.addEventListener('keydown', closeOnEscape)
+    return () => {
+      document.removeEventListener('pointerdown', closeOnOutsideClick)
+      document.removeEventListener('keydown', closeOnEscape)
+    }
+  }, [moreMenuOpen])
 
   useEffect(() => {
     const requestedId = contactChatId ?? requestedChatId
@@ -133,6 +161,21 @@ export default function ChatPage({ sidebarCollapsed }: ChatPageProps) {
     setCallNow(startedAt)
     setActiveCall(type)
   }
+
+  useEffect(() => {
+    if (!requestedCall || !directContact) {
+      autoCallKeyRef.current = null
+      return
+    }
+    const callKey = `${directContact.id}:${requestedCall}`
+    if (requestedCall !== 'audio' || autoCallKeyRef.current === callKey) return
+
+    autoCallKeyRef.current = callKey
+    startCall('audio')
+    const nextSearchParams = new URLSearchParams(searchParams)
+    nextSearchParams.delete('call')
+    setSearchParams(nextSearchParams, { replace: true })
+  }, [directContact, requestedCall, searchParams, setSearchParams])
 
   const endCall = () => {
     setActiveCall(null)
@@ -199,7 +242,7 @@ export default function ChatPage({ sidebarCollapsed }: ChatPageProps) {
 
   return (
     <div className="flex h-full bg-[#f5f7fb] text-[#101B3D]">
-      {!sidebarCollapsed ? <aside className="flex w-[300px] shrink-0 flex-col border-r border-[#e5e7eb] bg-[#fafafa]">
+      <aside className="flex w-[300px] shrink-0 flex-col border-r border-[#e5e7eb] bg-[#fafafa]">
         <div className="flex items-center justify-between border-b border-[#e5e7eb] px-4 py-3">
           <div>
             <p className="text-[10px] font-semibold uppercase tracking-[0.12em] text-[#6b7280]">Company chat</p>
@@ -285,7 +328,7 @@ export default function ChatPage({ sidebarCollapsed }: ChatPageProps) {
             )
           }) : <p className="px-3 py-6 text-center text-[12px] text-[#6b7280]">No chats found</p>}
         </div>
-      </aside> : null}
+      </aside>
 
       <section className="flex min-w-0 flex-1 flex-col bg-[#ffffff]">
         <div role="tablist" aria-label="Open chats" className="flex min-h-12 items-end gap-1 overflow-x-auto border-t border-[#d1d5db] bg-[#f3f4f6] px-4 pt-1">
@@ -338,7 +381,7 @@ export default function ChatPage({ sidebarCollapsed }: ChatPageProps) {
             <button type="button" onClick={() => startCall('video')} aria-label="Start video call" title="Video call" className="rounded-md border border-[#e5e7eb] bg-[#f9fafb] p-2 text-[#4b5563] hover:text-[#101B3D]">
               <Video size={15} />
             </button>
-            <div className="relative">
+            <div className="relative" ref={moreMenuRef}>
               <button type="button" onClick={() => setMoreMenuOpen((open) => !open)} aria-label="More chat actions" title="More actions" className="rounded-md border border-[#e5e7eb] bg-[#f9fafb] p-2 text-[#4b5563] hover:text-[#101B3D]">
               <MoreVertical size={15} />
               </button>

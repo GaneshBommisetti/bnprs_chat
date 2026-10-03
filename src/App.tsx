@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 import { Navigate, Route, Routes, useNavigate } from 'react-router-dom'
 
 import { AppHeader } from './components/AppHeader'
@@ -21,15 +21,18 @@ import type { Meeting, UserStatus } from './types'
 
 const statusOptions: UserStatus[] = [
   { id: 'available', label: 'Available', description: 'Ready to collaborate' },
-  { id: 'busy', label: 'Busy', description: 'Focus time' },
   { id: 'away', label: 'Away', description: 'Stepping away' },
+  { id: 'do-not-disturb', label: 'Do not disturb', description: 'Focus time' },
+  { id: 'offline', label: 'Offline', description: 'Not available' },
+  { id: 'working-remotely', label: 'Working remotely', description: 'Working away from office' },
+  { id: 'in-office', label: 'In office', description: 'At the office' },
+  { id: 'on-leave', label: 'On leave', description: 'Out of office' },
 ]
 
 function App() {
   const navigate = useNavigate()
   const [searchQuery, setSearchQuery] = useState('')
   const [profileOpen, setProfileOpen] = useState(false)
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
   const [selectedStatus, setSelectedStatus] = useState('Available')
   const [statusMenuOpen, setStatusMenuOpen] = useState(false)
   const [remoteWorkEnabled, setRemoteWorkEnabled] = useState(() => window.localStorage.getItem('bnprs-remote-work') !== 'off')
@@ -53,6 +56,11 @@ function App() {
       return initialMeetings
     }
   })
+
+  const handleProfileToggle = useCallback(() => setProfileOpen((open) => !open), [])
+  const handleProfileClose = useCallback(() => setProfileOpen(false), [])
+  const handleStatusMenuToggle = useCallback(() => setStatusMenuOpen((open) => !open), [])
+  const handleStatusMenuClose = useCallback(() => setStatusMenuOpen(false), [])
 
   const handleRemoteWorkChange = (enabled: boolean) => {
     setRemoteWorkEnabled(enabled)
@@ -146,16 +154,14 @@ function App() {
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
         profileOpen={profileOpen}
-        onProfileToggle={() => setProfileOpen((open) => !open)}
-        onProfileClose={() => setProfileOpen(false)}
+        onProfileToggle={handleProfileToggle}
+        onProfileClose={handleProfileClose}
         profileName={profileName}
         profileEmail={profileEmail}
         onProfileSave={handleProfileSave}
         profilePhoto={profilePhoto}
         onProfilePhotoSave={handleProfilePhotoSave}
         onLogout={handleLogout}
-        sidebarCollapsed={sidebarCollapsed}
-        onSidebarToggle={() => setSidebarCollapsed((collapsed) => !collapsed)}
       />
 
       <div className="flex min-h-0 flex-1 overflow-hidden">
@@ -172,7 +178,8 @@ function App() {
                   selectedStatus={selectedStatus}
                   onStatusSelect={handleStatusSelect}
                   statusMenuOpen={statusMenuOpen}
-                  onStatusMenuToggle={() => setStatusMenuOpen((open) => !open)}
+                  onStatusMenuToggle={handleStatusMenuToggle}
+                  onStatusMenuClose={handleStatusMenuClose}
                   remoteWorkEnabled={remoteWorkEnabled}
                   onRemoteWorkChange={handleRemoteWorkChange}
                   remoteWorkStartedAt={remoteWorkStartedAt}
@@ -181,7 +188,7 @@ function App() {
                 />
               )}
             />
-            <Route path="/chat" element={<ChatPage sidebarCollapsed={sidebarCollapsed} />} />
+            <Route path="/chat" element={<ChatPage />} />
             <Route path="/inbox" element={<Navigate to="/chat?channel=bpr2002-talab-qi-general" replace />} />
             <Route path="/bnprs-tree" element={<OrganizationTreePage />} />
             <Route path="/channels" element={<ChannelsPage />} />
