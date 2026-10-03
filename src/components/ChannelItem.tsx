@@ -13,6 +13,7 @@ export function ChannelItem({ item, active = false, onClick }: ChannelItemProps)
     <button
       type="button"
       onClick={onClick}
+      //added comment 
       className={[
         'flex w-full items-center justify-between rounded-md px-2 py-1.5 text-left transition-colors',
         active ? 'bg-[#fff1df] text-[#a85b08]' : 'text-[#374151] hover:bg-[#fff7ed] hover:text-[#F2992F]',
