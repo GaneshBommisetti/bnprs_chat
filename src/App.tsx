@@ -4,7 +4,6 @@ import { Navigate, Route, Routes, useNavigate } from 'react-router-dom'
 import { AppHeader } from './components/AppHeader'
 import { meetings as initialMeetings } from './data/meetings'
 import CalendarPage from './pages/Calendar'
-import ChannelsPage from './pages/Channels'
 import ChatPage from './pages/Chat'
 import Dashboard from './pages/Dashboard'
 import AppsPage from './pages/Apps'
@@ -188,10 +187,10 @@ function App() {
                 />
               )}
             />
-            <Route path="/chat" element={<ChatPage />} />
+            <Route path="/chat" element={<ChatPage key="chat" />} />
             <Route path="/inbox" element={<Navigate to="/chat?channel=bpr2002-talab-qi-general" replace />} />
             <Route path="/bnprs-tree" element={<OrganizationTreePage />} />
-            <Route path="/channels" element={<ChannelsPage />} />
+            <Route path="/channels" element={<ChatPage key="channels" channelsOnly />} />
             <Route path="/meetings" element={<MeetingsPage meetings={scheduledMeetings} onSchedule={handleScheduleMeeting} onDelete={handleDeleteMeeting} onReschedule={handleRescheduleMeeting} />} />
             <Route path="/history" element={<HistoryPage />} />
             <Route path="/files" element={<FilesPage />} />

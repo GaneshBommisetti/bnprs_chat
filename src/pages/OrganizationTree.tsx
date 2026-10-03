@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import type { FormEvent, ReactNode } from 'react'
 import { Link } from 'react-router-dom'
-import { BriefcaseBusiness, Code2, MessageCircle, Palette, Phone, Plus, ShoppingBag, Trash2, Truck, UsersRound, X } from 'lucide-react'
+import { BriefcaseBusiness, Code2, MessageCircle, Palette, Phone, Plus, ShoppingBag, Trash2, Truck, X } from 'lucide-react'
 
 import './OrganizationTree.css'
 
@@ -140,18 +140,6 @@ export default function OrganizationTreePage() {
   return (
     <main className="org-tree-page">
       <div className="org-tree-shell">
-        <header className="org-tree-heading">
-          <div>
-            <p className="org-tree-eyebrow"><UsersRound size={14} /> BNPRS · COMPANY STRUCTURE</p>
-            <h1>BNPRS Tree</h1>
-            <p className="org-tree-summary">{people.length} employees <span /> {departments.length} departments · Select a department to view its team</p>
-          </div>
-          <button className="org-add-button" type="button" onClick={() => setFormOpen((open) => !open)} aria-expanded={formOpen}>
-            {formOpen ? <X size={17} /> : <Plus size={17} />}
-            {formOpen ? 'Close' : 'Add employee'}
-          </button>
-        </header>
-
         {formOpen ? (
           <form className="org-add-form" onSubmit={handleAddPerson}>
             <label>Name<input name="name" required placeholder="Employee name" /></label>
@@ -175,10 +163,15 @@ export default function OrganizationTreePage() {
         <section className="org-tree-panel" aria-label="BNPRS company hierarchy">
           <div className="org-tree-panel-heading">
             <div><BriefcaseBusiness size={17} /><h2>BNPRS</h2></div>
-            <span>Company</span>
+            <div className="org-tree-panel-actions">
+              <span>{people.length} employees · {departments.length} departments</span>
+              <button className="org-add-button" type="button" onClick={() => setFormOpen((open) => !open)} aria-expanded={formOpen}>
+                {formOpen ? <X size={16} /> : <Plus size={16} />}
+                {formOpen ? 'Close' : 'Add employee'}
+              </button>
+            </div>
           </div>
           <div className="org-hierarchy-root">
-            <div className="org-company-node"><span className="org-company-mark">B</span><span><strong>BNPRS</strong><small>Biometric identity & payment technology</small></span></div>
             <div className="org-department-grid">
               {departments.map((department) => {
                 const DepartmentIcon = department.icon

@@ -58,7 +58,7 @@ const messagesByChannel: Record<string, ChatMessage[]> = {
   ],
 }
 
-export default function ChatPage() {
+export default function ChatPage({ channelsOnly = false }: { channelsOnly?: boolean }) {
   const [searchParams, setSearchParams] = useSearchParams()
   const requestedContactId = searchParams.get('contact')
   const requestedContactName = searchParams.get('name')
@@ -79,11 +79,13 @@ export default function ChatPage() {
   ), [requestedContactId, requestedContactName])
   const contactChatId = directContact ? `employee-${directContact.id}` : null
   const allChats = useMemo(() => [
-    ...pinnedChannels,
+    ...(channelsOnly ? [] : pinnedChannels),
     ...conversationChannels,
-    ...(directContact ? [{ id: `employee-${directContact.id}`, name: directContact.name }] : []),
-  ], [directContact])
-  const initialChatId = contactChatId ?? (allChats.some((item) => item.id === requestedChatId) ? requestedChatId as string : 'bnprs-announcements')
+    ...(!channelsOnly && directContact ? [{ id: `employee-${directContact.id}`, name: directContact.name }] : []),
+  ], [channelsOnly, directContact])
+  const initialChatId = channelsOnly
+    ? (allChats.some((item) => item.id === requestedChatId) ? requestedChatId as string : conversationChannels[0].id)
+    : contactChatId ?? (allChats.some((item) => item.id === requestedChatId) ? requestedChatId as string : 'bnprs-announcements')
   const [selectedId, setSelectedId] = useState(initialChatId)
   const [chatFilter, setChatFilter] = useState<'All' | 'Unread' | 'Mentions'>('All')
   const [openChatIds, setOpenChatIds] = useState([initialChatId])
@@ -246,7 +248,7 @@ export default function ChatPage() {
         <div className="flex items-center justify-between border-b border-[#e5e7eb] px-4 py-3">
           <div>
             <p className="text-[10px] font-semibold uppercase tracking-[0.12em] text-[#6b7280]">Company chat</p>
-            <h2 className="mt-1 text-[16px] font-semibold text-[#111827]">Messages</h2>
+            <h2 className="mt-1 text-[16px] font-semibold text-[#111827]">{channelsOnly ? 'Channels' : 'Messages'}</h2>
           </div>
           <button
             type="button"

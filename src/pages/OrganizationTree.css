@@ -1,13 +1,13 @@
 .org-tree-page {
   min-height: 100%;
-  padding: 30px clamp(18px, 4vw, 52px) 46px;
+  padding: 14px;
   background: linear-gradient(180deg, #f7f8fb 0%, #f1f4f8 100%);
   color: #14213d;
 }
 
 .org-tree-shell {
-  width: min(100%, 1160px);
-  margin: 0 auto;
+  width: 100%;
+  min-height: 100%;
 }
 
 .org-tree-heading,
@@ -142,8 +142,8 @@
 }
 
 .org-tree-panel-heading {
-  min-height: 52px;
-  padding: 0 17px;
+  min-height: 64px;
+  padding: 0 20px;
   border-bottom: 1px solid #edf0f4;
 }
 
@@ -170,8 +170,23 @@
   font-size: 11px;
 }
 
+.org-tree-panel-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.org-tree-panel-actions > span {
+  color: #788397;
+  font-size: 11px;
+}
+
+.org-tree-panel-actions .org-add-button {
+  min-height: 34px;
+}
+
 .org-hierarchy-root {
-  padding: 18px;
+  padding: 22px;
 }
 
 .org-company-node {
@@ -370,8 +385,9 @@
 
 .org-person-details small {
   overflow: hidden;
-  color: #8a93a1;
-  font-size: 10px;
+  color: #5c6d87;
+  font-size: 11px;
+  font-weight: 600;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -387,8 +403,8 @@
 }
 
 .org-team-section {
-  margin-top: 17px;
-  padding: 16px;
+  margin-top: 14px;
+  padding: 18px;
 }
 
 .org-team-heading {
@@ -429,7 +445,7 @@
   grid-template-columns: repeat(3, minmax(220px, 1fr));
   gap: 18px;
   margin: 22px 10px 0;
-  padding-top: 22px;
+  padding-top: 24px;
 }
 
 .org-chart-children::before {
@@ -437,16 +453,25 @@
   top: 0;
   right: 16.66%;
   left: 16.66%;
-  border-top: 1px solid #dbe2eb;
+  border-top: 2px solid #bdc9d9;
+  content: '';
+}
+
+.org-reporting-tree > .org-chart-branch > .org-chart-children::after {
+  position: absolute;
+  top: -22px;
+  left: 50%;
+  height: 24px;
+  border-left: 2px solid #bdc9d9;
   content: '';
 }
 
 .org-chart-children > .org-chart-branch::before {
   position: absolute;
-  top: -20px;
+  top: -24px;
   left: 50%;
-  height: 20px;
-  border-left: 1px solid #dbe2eb;
+  height: 24px;
+  border-left: 2px solid #bdc9d9;
   content: '';
 }
 
@@ -454,8 +479,8 @@
   grid-template-columns: minmax(220px, 1fr);
   gap: 10px;
   margin: 16px 0 0;
-  padding: 14px 0 0 14px;
-  border-left: 1px solid #dbe2eb;
+  padding: 14px 0 0 16px;
+  border-left: 2px solid #bdc9d9;
 }
 
 .org-chart-children .org-chart-children::before {
@@ -464,10 +489,10 @@
 
 .org-chart-children .org-chart-children > .org-chart-branch::before {
   top: 20px;
-  left: -14px;
-  width: 14px;
+  left: -16px;
+  width: 16px;
   height: 0;
-  border-top: 1px solid #dbe2eb;
+  border-top: 2px solid #bdc9d9;
   border-left: 0;
 }
 
@@ -576,17 +601,26 @@
 
 @media (max-width: 600px) {
   .org-tree-page {
-    padding: 23px 14px 32px;
+    padding: 8px;
   }
 
-  .org-tree-heading {
-    align-items: flex-start;
-    flex-direction: column;
-    gap: 14px;
+  .org-tree-panel-heading {
+    min-height: 56px;
+    padding: 0 12px;
   }
 
-  .org-tree-heading h1 {
-    font-size: 26px;
+  .org-tree-panel-actions {
+    gap: 8px;
+  }
+
+  .org-tree-panel-actions > span {
+    display: none;
+  }
+
+  .org-tree-panel-actions .org-add-button {
+    min-height: 32px;
+    padding: 0 9px;
+    font-size: 10px;
   }
 
   .org-add-form,
