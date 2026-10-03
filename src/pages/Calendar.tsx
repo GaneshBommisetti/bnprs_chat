@@ -95,6 +95,7 @@ export default function CalendarPage({ meetings }: CalendarPageProps) {
               {weekdays.map((weekday) => <span className="calendar-weekday" key={weekday}>{weekday}</span>)}
               {monthDates.map((day) => dayButton(day))}
             </div>
+            //
           ) : view === 'Week' ? (
             <div className="calendar-week-grid">{weekDates.map((day) => dayButton(day, true))}</div>
           ) : (
