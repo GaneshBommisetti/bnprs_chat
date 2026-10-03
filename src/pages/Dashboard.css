@@ -205,10 +205,6 @@
   grid-template-columns: minmax(0, 1.42fr) minmax(310px, 0.86fr);
 }
 
-.overview-grid-secondary {
-  grid-template-columns: minmax(0, 1.42fr) minmax(310px, 0.86fr);
-}
-
 .overview-section {
   min-width: 0;
   padding: 19px 21px;
@@ -539,106 +535,6 @@
   font-size: 11px;
   font-weight: 600;
   text-decoration: none;
-}
-
-.activity-section {
-  padding-bottom: 7px;
-}
-
-.activity-stream {
-  padding-top: 7px;
-  border-top: 1px solid #eceee9;
-}
-
-.activity-item {
-  position: relative;
-  display: grid;
-  grid-template-columns: 34px minmax(0, 1fr) auto;
-  gap: 11px;
-  min-height: 83px;
-  padding: 12px 0;
-}
-
-.activity-avatar {
-  z-index: 1;
-  display: grid;
-  width: 32px;
-  height: 32px;
-  place-items: center;
-  font-size: 9px;
-  font-weight: 700;
-}
-
-.activity-rail {
-  position: absolute;
-  top: 43px;
-  bottom: -11px;
-  left: 15px;
-  width: 1px;
-  background: #e4e7e1;
-}
-
-.activity-item:last-child .activity-rail {
-  display: none;
-}
-
-.activity-content {
-  min-width: 0;
-}
-
-.activity-content p {
-  margin: 0;
-  color: #69726c;
-  font-size: 12px;
-  line-height: 1.55;
-}
-
-.activity-content p strong {
-  color: #182541;
-  font-weight: 700;
-}
-
-.activity-content p button {
-  padding: 0;
-  border: 0;
-  background: transparent;
-  color: #3f5f50;
-  font: inherit;
-  font-weight: 700;
-}
-
-.activity-content p button:hover {
-  text-decoration: underline;
-}
-
-.activity-detail {
-  display: block;
-  overflow: hidden;
-  margin-top: 4px;
-  color: #818983;
-  font-size: 11px;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.activity-content time {
-  display: block;
-  margin-top: 5px;
-}
-
-.activity-kind {
-  align-self: start;
-  padding: 4px 5px;
-  background: #f7eee2;
-  color: #9a6126;
-  font-size: 7px;
-  font-weight: 700;
-}
-
-.mention-icon,
-.activity-file-icon {
-  margin: 3px 5px 0;
-  color: #718276;
 }
 
 .overview-aside {
@@ -1014,8 +910,7 @@
     padding-left: 24px;
   }
 
-  .overview-grid-main,
-  .overview-grid-secondary {
+  .overview-grid-main {
     grid-template-columns: minmax(0, 1.2fr) minmax(280px, 0.9fr);
     gap: 14px;
   }
@@ -1062,8 +957,7 @@
     border-top: 1px solid #e8e9e4;
   }
 
-  .overview-grid-main,
-  .overview-grid-secondary {
+  .overview-grid-main {
     grid-template-columns: minmax(0, 1fr);
   }
 

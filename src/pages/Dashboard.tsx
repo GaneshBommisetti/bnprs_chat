@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import { ArrowUpRight, CalendarDays, ChevronRight, Clock3, FileText, ListFilter, MessageCircle, Paperclip, UsersRound, Video } from 'lucide-react'
+import { ArrowUpRight, CalendarDays, ChevronRight, Clock3, ListFilter, MessageCircle, Paperclip, UsersRound, Video } from 'lucide-react'
 import { Link, useNavigate } from 'react-router-dom'
 
 import { RemoteWorkToggle } from '../components/RemoteWorkToggle'
@@ -30,18 +30,6 @@ const conversations = [
   { name: 'Design Team', message: 'The new onboarding flow is ready for a final look.', time: '9:16', initials: 'DS', tone: 'lilac', unread: 0, attachment: true, channel: 'bpr1010-ui-ux' },
   { name: 'Development Team', message: 'Merged the release candidate. QA can begin.', time: '8:54', initials: 'DV', tone: 'green', unread: 0, channel: 'krishna' },
   { name: 'Management', message: 'Please add your highlights to the weekly brief.', time: '8:31', initials: 'MG', tone: 'navy', unread: 0, priority: 'Important', channel: 'bnprs-announcements' },
-]
-
-const activity = [
-  { person: 'Maha Lakshmi', action: 'posted an announcement in', subject: 'AandhiPe launch', detail: 'Release readiness review moved to Thursday. Please add blockers by 2 PM.', time: '12 min ago', initials: 'ML', kind: 'announcement', path: '/channels' },
-  { person: 'Surya Venkata', action: 'mentioned you in', subject: 'Design handoff', detail: 'Ganesh, could you confirm the final payment states?', time: '28 min ago', initials: 'SV', kind: 'mention', path: '/chat?channel=surya' },
-  { person: 'Chiranjeevi', action: 'shared a file in', subject: 'Payments', detail: 'Settlement reconciliation · v4.xlsx', time: '46 min ago', initials: 'CN', kind: 'file', path: '/files' },
-]
-
-const followUps = [
-  { title: 'Reply to Surya Venkata', detail: 'Confirm the final payment states.', action: 'Open mention', path: '/chat?channel=surya', tone: 'blue' },
-  { title: 'Add launch blockers', detail: 'AandhiPe release review · due 2 PM', action: 'Open update', path: '/channels', tone: 'apricot' },
-  { title: 'Review reconciliation', detail: 'Settlement reconciliation · v4.xlsx', action: 'Open file', path: '/files', tone: 'green' },
 ]
 
 export default function Dashboard({
@@ -147,40 +135,6 @@ export default function Dashboard({
           </section>
         </div>
 
-        <div className="overview-grid overview-grid-secondary">
-          <section className="overview-section activity-section">
-            <div className="section-heading">
-              <div><span className="section-kicker">ACROSS YOUR TEAMS</span><h2>Team activity</h2></div>
-              <Link className="text-link" to="/channels">Open channels <ArrowUpRight size={14} /></Link>
-            </div>
-            <div className="activity-stream">
-              {activity.map((item) => (
-                <article key={item.subject} className="activity-item">
-                  <span className={`activity-avatar tone-${item.kind === 'file' ? 'green' : item.kind === 'mention' ? 'blue' : 'apricot'}`}>{item.initials}</span>
-                  <span className="activity-rail" />
-                  <div className="activity-content"><p><strong>{item.person}</strong> {item.action} <button type="button" onClick={() => navigate(item.path)}>{item.subject}</button></p><span className="activity-detail">{item.detail}</span><time>{item.time}</time></div>
-                  {item.kind === 'announcement' ? <span className="activity-kind">UPDATE</span> : item.kind === 'file' ? <FileText size={16} className="activity-file-icon" /> : <span className="mention-icon">@</span>}
-                </article>
-              ))}
-            </div>
-          </section>
-
-          <aside className="overview-section follow-up-section">
-            <div className="section-heading">
-              <div><span className="section-kicker">BASED ON YOUR MESSAGES</span><h2>Your follow-ups</h2></div>
-              <span className="follow-up-total">{followUps.length} open</span>
-            </div>
-            <div className="follow-up-list">
-              {followUps.map((item) => (
-                <Link className="follow-up-row" to={item.path} key={item.title}>
-                  <span className={`follow-up-mark tone-${item.tone}`} />
-                  <span className="follow-up-copy"><strong>{item.title}</strong><small>{item.detail}</small></span>
-                  <span className="follow-up-action">{item.action}<ArrowUpRight size={13} /></span>
-                </Link>
-              ))}
-            </div>
-          </aside>
-        </div>
       </main>
     </div>
   )

@@ -332,14 +332,14 @@
     height: 100%;
     max-height: none;
     object-fit: cover;
-    opacity: 0.34;
+    opacity: 0.22;
   }
 
   .login-hero::after {
     position: absolute;
     inset: 0;
     z-index: 1;
-    background: linear-gradient(90deg, #071a38 0%, #071a38e8 46%, #071a3899 100%);
+    background: rgba(7, 26, 56, 0.54);
     content: '';
   }
 

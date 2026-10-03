@@ -28,6 +28,7 @@ type AppHeaderProps = {
 const navigation = [
   { label: 'Home', path: '/remote-work' },
   { label: 'Inbox', path: '/chat?channel=bpr2002-talab-qi-general' },
+  { label: 'BNPRS Tree', path: '/bnprs-tree' },
   { label: 'People', path: '/organization' },
   { label: 'Channels', path: '/channels' },
   { label: 'Meetings', path: '/meetings' },
@@ -55,8 +56,6 @@ export function AppHeader({
   const navigate = useNavigate()
   const [notificationsOpen, setNotificationsOpen] = useState(false)
   const [quickActionsOpen, setQuickActionsOpen] = useState(false)
-  const [workspaceOpen, setWorkspaceOpen] = useState(false)
-  const [workspace, setWorkspace] = useState('BNPRS · Company')
   const profileWrapRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -88,23 +87,6 @@ export function AppHeader({
         <Link className="bn-brand" to="/remote-work" aria-label="BNPRS Chat home">
           <img src={logoLockupDark} alt="BNPRS Chat" />
         </Link>
-
-        <div className="bn-workspace-wrap">
-          <button className="bn-workspace" type="button" onClick={() => setWorkspaceOpen((open) => !open)} aria-expanded={workspaceOpen}>
-            <span className="bn-workspace-mark">B</span>
-            <span><small>WORKSPACE</small><strong>{workspace}</strong></span>
-            <ChevronDown size={14} />
-          </button>
-          {workspaceOpen ? (
-            <div className="bn-popover bn-workspace-menu">
-              {['BNPRS · Company', 'AandhiPe · Product'].map((name) => (
-                <button key={name} type="button" onClick={() => { setWorkspace(name); setWorkspaceOpen(false) }}>
-                  <span className="bn-workspace-mark">{name[0]}</span><span>{name}</span>{workspace === name ? <span className="bn-current-mark">Current</span> : null}
-                </button>
-              ))}
-            </div>
-          ) : null}
-        </div>
 
         <label className="bn-global-search">
           <Search size={16} aria-hidden="true" />

@@ -13,6 +13,7 @@ import HistoryPage from './pages/History'
 import LoginPage from './pages/Login'
 import MeetingsPage from './pages/Meetings'
 import NotesPage from './pages/Notes'
+import OrganizationTreePage from './pages/OrganizationTree'
 import OrganizationPage from './pages/Organization'
 import SettingsPage from './pages/Settings'
 
@@ -166,6 +167,7 @@ function App() {
             />
             <Route path="/chat" element={<ChatPage sidebarCollapsed={sidebarCollapsed} />} />
             <Route path="/inbox" element={<Navigate to="/chat?channel=bpr2002-talab-qi-general" replace />} />
+            <Route path="/bnprs-tree" element={<OrganizationTreePage />} />
             <Route path="/channels" element={<ChannelsPage />} />
             <Route path="/meetings" element={<MeetingsPage meetings={scheduledMeetings} onSchedule={handleScheduleMeeting} />} />
             <Route path="/history" element={<HistoryPage />} />
