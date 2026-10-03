@@ -117,6 +117,22 @@ function App() {
     })
   }
 
+  const handleDeleteMeeting = (meetingId: string) => {
+    setScheduledMeetings((current) => {
+      const next = current.filter((meeting) => meeting.id !== meetingId)
+      window.localStorage.setItem('bnprs-scheduled-meetings', JSON.stringify(next))
+      return next
+    })
+  }
+
+  const handleRescheduleMeeting = (meetingId: string, nextMeeting: Omit<Meeting, 'id'>) => {
+    setScheduledMeetings((current) => {
+      const next = current.map((meeting) => meeting.id === meetingId ? { ...meeting, ...nextMeeting } : meeting)
+      window.localStorage.setItem('bnprs-scheduled-meetings', JSON.stringify(next))
+      return next
+    })
+  }
+
   const handleStatusSelect = (status: string) => {
     setSelectedStatus(status)
     setStatusMenuOpen(false)
@@ -169,7 +185,7 @@ function App() {
             <Route path="/inbox" element={<Navigate to="/chat?channel=bpr2002-talab-qi-general" replace />} />
             <Route path="/bnprs-tree" element={<OrganizationTreePage />} />
             <Route path="/channels" element={<ChannelsPage />} />
-            <Route path="/meetings" element={<MeetingsPage meetings={scheduledMeetings} onSchedule={handleScheduleMeeting} />} />
+            <Route path="/meetings" element={<MeetingsPage meetings={scheduledMeetings} onSchedule={handleScheduleMeeting} onDelete={handleDeleteMeeting} onReschedule={handleRescheduleMeeting} />} />
             <Route path="/history" element={<HistoryPage />} />
             <Route path="/files" element={<FilesPage />} />
             <Route path="/calendar" element={<CalendarPage meetings={scheduledMeetings} />} />

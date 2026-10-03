@@ -17,13 +17,19 @@ const initialPeople: OrgPerson[] = [
   { id: 'ramesh', name: 'Ramesh', title: 'CTO', department: 'Technology', managerId: 'pattabhi' },
   { id: 'ranjith', name: 'Ranjith', title: 'CCO', department: 'Commercial', managerId: 'pattabhi' },
   { id: 'murali', name: 'Murali', title: 'Technical Head', department: 'Technology', managerId: 'pattabhi' },
+  { id: 'tejas', name: 'Tejas', title: 'Security Analyst', department: 'Technology', managerId: 'murali' },
+  { id: 'vignesh', name: 'Vignesh', title: 'Security Architect', department: 'Technology', managerId: 'murali' },
+  { id: 'anil', name: 'Anil', title: 'Infrastructure Engineer', department: 'Technology', managerId: 'murali' },
+  { id: 'pallavi', name: 'Pallavi', title: 'Migrations Engineer', department: 'Technology', managerId: 'murali' },
+  { id: 'deepa', name: 'Deepa', title: 'Release Manager', department: 'Technology', managerId: 'murali' },
+  { id: 'sneha', name: 'Sneha', title: 'Product Manager', department: 'Product', managerId: 'pattabhi' },
 ]
 
 function getInitials(name: string) {
   return name.trim().split(/\s+/).slice(0, 2).map((part) => part[0]).join('').toUpperCase()
 }
 
-function OrganizationNode({ person, people }: { person: OrgPerson; people: OrgPerson[] }) {
+function OrganizationNode({ person, people, onDelete }: { person: OrgPerson; people: OrgPerson[]; onDelete: (personId: string) => void }) {
   const reports = people.filter((candidate) => candidate.managerId === person.id)
 
   return (
@@ -35,11 +41,18 @@ function OrganizationNode({ person, people }: { person: OrgPerson; people: OrgPe
           <span>{person.title}</span>
           <small>{person.department}</small>
         </span>
-        {reports.length ? <span className="org-report-count" aria-label={`${reports.length} direct reports`}>{reports.length}</span> : null}
+        <div className="org-card-actions">
+          {person.id !== 'pattabhi' ? (
+            <button type="button" className="org-delete-button" onClick={() => onDelete(person.id)} aria-label={`Delete ${person.name}`}>
+              Delete
+            </button>
+          ) : null}
+          {reports.length ? <span className="org-report-count" aria-label={`${reports.length} direct reports`}>{reports.length}</span> : null}
+        </div>
       </article>
       {reports.length ? (
         <ul className="org-tree-children">
-          {reports.map((report) => <OrganizationNode key={report.id} person={report} people={people} />)}
+          {reports.map((report) => <OrganizationNode key={report.id} person={report} people={people} onDelete={onDelete} />)}
         </ul>
       ) : null}
     </li>
@@ -52,7 +65,9 @@ function loadPeople(): OrgPerson[] {
     if (!savedPeople) return initialPeople
     const parsedPeople = JSON.parse(savedPeople) as OrgPerson[]
     if (Array.isArray(parsedPeople) && parsedPeople.some((person) => person.id === 'pattabhi')) {
-      return parsedPeople.map((person) => person.id === 'murali' ? { ...person, managerId: 'pattabhi' } : person)
+      const normalizedPeople = parsedPeople.map((person) => person.id === 'murali' ? { ...person, managerId: 'pattabhi' } : person)
+      if (normalizedPeople.length >= initialPeople.length) return normalizedPeople
+      return initialPeople
     }
   } catch {
     return initialPeople
@@ -70,6 +85,16 @@ export default function OrganizationTreePage() {
   }, [people])
 
   const root = people.find((person) => person.id === 'pattabhi') ?? initialPeople[0]
+
+  const handleDeletePerson = (personId: string) => {
+    setPeople((currentPeople) => {
+      const target = currentPeople.find((person) => person.id === personId)
+      if (!target) return currentPeople
+      return currentPeople
+        .filter((person) => person.id !== personId)
+        .map((person) => (person.managerId === personId ? { ...person, managerId: target.managerId ?? 'pattabhi' } : person))
+    })
+  }
 
   const handleAddPerson = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -98,7 +123,7 @@ export default function OrganizationTreePage() {
           <div>
             <p className="org-tree-eyebrow"><Network size={14} /> PEOPLE & REPORTING</p>
             <h1>BNPRS Tree</h1>
-            <p className="org-tree-summary">{people.length} people <span /> {people.length - 1} reporting lines</p>
+            <p className="org-tree-summary">{people.length} members <span /> {people.length - 1} reporting lines</p>
           </div>
           <button className="org-add-button" type="button" onClick={() => setFormOpen((open) => !open)} aria-expanded={formOpen}>
             {formOpen ? <X size={17} /> : <Plus size={17} />}
@@ -125,11 +150,11 @@ export default function OrganizationTreePage() {
         <section className="org-tree-panel" aria-label="BNPRS reporting structure">
           <div className="org-tree-panel-heading">
             <div><UsersRound size={17} /><h2>Reporting structure</h2></div>
-            <span>Department shown under each role</span>
+            <span>{people.length} employees in the network</span>
           </div>
           <div className="org-tree-viewport">
             <ul className="org-tree-root">
-              <OrganizationNode person={root} people={people} />
+              <OrganizationNode person={root} people={people} onDelete={handleDeletePerson} />
             </ul>
           </div>
         </section>

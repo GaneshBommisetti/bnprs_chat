@@ -3,15 +3,17 @@
   z-index: 10;
   flex: 0 0 auto;
   color: #101b3d;
-  background: #fff;
-  border-bottom: 1px solid #e6e8e3;
+  background: rgba(255, 255, 255, 0.96);
+  border-bottom: 1px solid #e7ebeb;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 10px 22px rgba(16, 27, 61, 0.04);
 }
 
 .bn-header-main {
-  min-height: 74px;
   display: flex;
   align-items: center;
-  gap: 24px;
+  gap: 22px;
+  min-height: 76px;
   padding: 0 38px;
 }
 
@@ -32,26 +34,27 @@
 .bn-action-wrap {
   position: relative;
 }
-.bn-primary-nav a:hover {
-  background: #f6f7f4;
-}
 
 .bn-global-search {
   display: flex;
   align-items: center;
   gap: 10px;
   width: min(100%, 420px);
-  height: 38px;
+  height: 42px;
   margin: 0 auto;
-  padding: 0 11px;
+  padding: 0 12px 0 11px;
   border: 1px solid #e5e8e3;
-  background: #f8f9f7;
+  border-radius: 14px;
+  background: linear-gradient(180deg, #f9faf8 0%, #f3f5f2 100%);
   color: #7e8581;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
 }
 
 .bn-global-search:focus-within {
-  border-color: #aab2aa;
+  border-color: #c7cfc5;
   background: #fff;
+  box-shadow: 0 0 0 4px rgba(242, 153, 47, 0.08);
 }
 
 .bn-global-search input {
@@ -72,9 +75,10 @@
   display: inline-flex;
   align-items: center;
   gap: 3px;
-  padding: 3px 5px;
-  border: 1px solid #e3e5e1;
-  background: #fff;
+  padding: 4px 6px;
+  border: 1px solid #e6e8e3;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.9);
   color: #737a77;
   font-family: inherit;
   font-size: 10px;
@@ -95,51 +99,61 @@
   align-items: center;
   justify-content: center;
   color: #101b3d;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease, border-color 0.18s ease;
 }
 
 .bn-create-button {
-  height: 36px;
+  height: 38px;
   gap: 8px;
-  padding: 0 11px;
+  padding: 0 12px;
   border: 1px solid #101b3d;
-  background: #101b3d;
+  border-radius: 12px;
+  background: linear-gradient(180deg, #111b36 0%, #101b3d 100%);
   color: #fff;
   font-size: 12px;
   font-weight: 600;
+  box-shadow: 0 8px 18px rgba(16, 27, 61, 0.18);
 }
 
 .bn-create-button:hover {
-  background: #1c2b55;
+  transform: translateY(-1px);
+  background: linear-gradient(180deg, #1b2a4f 0%, #131d41 100%);
+  box-shadow: 0 12px 22px rgba(16, 27, 61, 0.2);
 }
 
 .bn-icon-button {
   position: relative;
-  width: 36px;
-  height: 36px;
+  width: 38px;
+  height: 38px;
   border: 1px solid transparent;
+  border-radius: 12px;
   background: transparent;
 }
 
 .bn-icon-button:hover,
 .bn-profile-button:hover {
-  background: #f6f7f4;
+  border-color: #edf0ec;
+  background: linear-gradient(180deg, #f8faf7 0%, #f3f5f1 100%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8);
 }
 
 .bn-notification-dot {
   position: absolute;
   top: 7px;
-  right: 7px;
+  right: 8px;
   width: 7px;
   height: 7px;
-  border: 1px solid #fff;
+  border: 2px solid #fff;
+  border-radius: 999px;
   background: #f2992f;
 }
 
 .bn-profile-button {
   gap: 7px;
-  height: 38px;
-  padding: 3px 6px 3px 3px;
+  height: 40px;
+  padding: 4px 8px 4px 4px;
   border: 1px solid transparent;
+  border-radius: 14px;
   background: transparent;
 }
 
@@ -147,13 +161,14 @@
 .bn-profile-button > span {
   width: 30px;
   height: 30px;
+  border-radius: 10px;
   object-fit: cover;
 }
 
 .bn-profile-button > span {
   display: grid;
   place-items: center;
-  background: #f1d8ba;
+  background: linear-gradient(135deg, #f7e0c0 0%, #f1d0a0 100%);
   color: #634323;
   font-size: 11px;
   font-weight: 700;
@@ -161,9 +176,9 @@
 
 .bn-primary-nav {
   display: flex;
-  align-items: stretch;
-  gap: 5px;
-  min-height: 42px;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
   padding: 0 38px;
   overflow-x: auto;
   scrollbar-width: none;
@@ -179,11 +194,20 @@
   flex: 0 0 auto;
   align-items: center;
   gap: 7px;
-  padding: 0 14px;
+  padding: 9px 12px;
+  border: 1px solid transparent;
+  border-radius: 10px;
   color: #69716d;
   font-size: 12px;
   font-weight: 600;
   text-decoration: none;
+  transition: background 0.18s ease, border-color 0.18s ease, color 0.18s ease, transform 0.18s ease;
+}
+
+.bn-primary-nav a:hover {
+  border-color: #edf0eb;
+  background: rgba(246, 247, 244, 0.9);
+  color: #101b3d;
 }
 
 .bn-nav-unread {
@@ -202,6 +226,8 @@
 
 .bn-primary-nav a.is-active {
   color: #101b3d;
+  background: linear-gradient(180deg, #fff8ef 0%, #fff3e5 100%);
+  border-color: #f7dfba;
 }
 
 .bn-primary-nav a.is-active::after {
@@ -210,6 +236,7 @@
   bottom: 0;
   left: 14px;
   height: 2px;
+  border-radius: 999px;
   background: #f2992f;
   content: '';
 }
@@ -221,9 +248,10 @@
   z-index: 30;
   min-width: 225px;
   padding: 6px;
-  border: 1px solid #e4e7e2;
-  background: #fff;
-  box-shadow: 0 12px 30px #18233a18;
+  border: 1px solid #e7ecf0;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.98);
+  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.12);
 }
 
 .bn-action-menu button {
@@ -233,14 +261,17 @@
   gap: 10px;
   padding: 10px;
   border: 0;
+  border-radius: 10px;
   background: transparent;
   color: #25324e;
   text-align: left;
   font-size: 12px;
+  transition: background 0.18s ease, transform 0.18s ease;
 }
 
 .bn-action-menu button:hover {
-  background: #f5f6f3;
+  background: #f5f7f4;
+  transform: translateX(1px);
 }
 
 .bn-notification-popover {
@@ -254,9 +285,9 @@
 .bn-notification-popover > div {
   position: static;
   width: 100%;
-  border-color: #e4e7e2;
-  border-radius: 0;
-  box-shadow: 0 12px 30px #18233a18;
+  border-color: #e7ecf0;
+  border-radius: 16px;
+  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.12);
 }
 
 @media (max-width: 900px) {
