@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { Bell, MoreVertical, Paperclip, Phone, PhoneOff, Search, Send, Smile, UserRound, UsersRound, Video, X } from 'lucide-react'
+import { ArrowLeft, Bell, MoreVertical, Paperclip, Phone, PhoneOff, Search, Send, Smile, UserRound, UsersRound, Video, X } from 'lucide-react'
 import { useSearchParams } from 'react-router-dom'
 
 import { conversationChannels, pinnedChannels } from '../data/channels'
@@ -87,6 +87,7 @@ export default function ChatPage({ channelsOnly = false }: { channelsOnly?: bool
     ? (allChats.some((item) => item.id === requestedChatId) ? requestedChatId as string : conversationChannels[0].id)
     : contactChatId ?? (allChats.some((item) => item.id === requestedChatId) ? requestedChatId as string : 'bnprs-announcements')
   const [selectedId, setSelectedId] = useState(initialChatId)
+  const [mobileConversationOpen, setMobileConversationOpen] = useState(true)
   const [chatFilter, setChatFilter] = useState<'All' | 'Unread' | 'Mentions'>('All')
   const [openChatIds, setOpenChatIds] = useState([initialChatId])
   const [chatMessages, setChatMessages] = useState(messagesByChannel)
@@ -155,6 +156,7 @@ export default function ChatPage({ channelsOnly = false }: { channelsOnly?: bool
   const openChat = (id: string) => {
     setOpenChatIds((current) => current.includes(id) ? current : [...current, id])
     setSelectedId(id)
+    setMobileConversationOpen(true)
   }
 
   const startCall = (type: 'audio' | 'video') => {
@@ -244,7 +246,10 @@ export default function ChatPage({ channelsOnly = false }: { channelsOnly?: bool
 
   return (
     <div className="flex h-full bg-[#f5f7fb] text-[#101B3D]">
-      <aside className="flex w-[300px] shrink-0 flex-col border-r border-[#e5e7eb] bg-[#fafafa]">
+      <aside className={[
+        'w-full shrink-0 flex-col border-r border-[#e5e7eb] bg-[#fafafa] md:flex md:w-[300px]',
+        mobileConversationOpen ? 'hidden' : 'flex',
+      ].join(' ')}>
         <div className="flex items-center justify-between border-b border-[#e5e7eb] px-4 py-3">
           <div>
             <p className="text-[10px] font-semibold uppercase tracking-[0.12em] text-[#6b7280]">Company chat</p>
@@ -332,7 +337,10 @@ export default function ChatPage({ channelsOnly = false }: { channelsOnly?: bool
         </div>
       </aside>
 
-      <section className="flex min-w-0 flex-1 flex-col bg-[#ffffff]">
+      <section className={[
+        'min-w-0 flex-1 flex-col bg-[#ffffff]',
+        mobileConversationOpen ? 'flex' : 'hidden md:flex',
+      ].join(' ')}>
         <div role="tablist" aria-label="Open chats" className="flex min-h-12 items-end gap-1 overflow-x-auto border-t border-[#d1d5db] bg-[#f3f4f6] px-4 pt-1">
           {openChats.map((chat) => (
             <div key={chat.id} className={['group flex max-w-[220px] shrink-0 items-center rounded-t-md border-t-2', selectedId === chat.id ? 'border-[#F2992F] bg-white' : 'border-transparent hover:bg-white/70'].join(' ')}>
@@ -361,6 +369,14 @@ export default function ChatPage({ channelsOnly = false }: { channelsOnly?: bool
 
         <header className="flex items-center justify-between border-b border-[#e5e7eb] px-5 py-2">
           <div className="flex items-center gap-3">
+            <button
+              type="button"
+              onClick={() => setMobileConversationOpen(false)}
+              aria-label="Back to conversation list"
+              className="grid h-9 w-9 shrink-0 place-items-center rounded-lg border border-[#e5e7eb] bg-white text-[#52627d] md:hidden"
+            >
+              <ArrowLeft size={17} />
+            </button>
             <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#fff1df] text-[#a85b08]">
               {selectedItem?.name.startsWith('#') || selectedItem?.id === 'uxui'
                 ? <UsersRound size={19} aria-hidden="true" />
@@ -377,10 +393,10 @@ export default function ChatPage({ channelsOnly = false }: { channelsOnly?: bool
           </div>
 
           <div className="flex items-center gap-2">
-            <button type="button" onClick={() => startCall('audio')} aria-label="Start audio call" title="Audio call" className="rounded-md border border-[#e5e7eb] bg-[#f9fafb] p-2 text-[#4b5563] hover:text-[#101B3D]">
+            <button type="button" onClick={() => startCall('audio')} aria-label="Start audio call" title="Audio call" className="hidden rounded-md border border-[#e5e7eb] bg-[#f9fafb] p-2 text-[#4b5563] hover:text-[#101B3D] sm:inline-flex">
               <Phone size={15} />
             </button>
-            <button type="button" onClick={() => startCall('video')} aria-label="Start video call" title="Video call" className="rounded-md border border-[#e5e7eb] bg-[#f9fafb] p-2 text-[#4b5563] hover:text-[#101B3D]">
+            <button type="button" onClick={() => startCall('video')} aria-label="Start video call" title="Video call" className="hidden rounded-md border border-[#e5e7eb] bg-[#f9fafb] p-2 text-[#4b5563] hover:text-[#101B3D] sm:inline-flex">
               <Video size={15} />
             </button>
             <div className="relative" ref={moreMenuRef}>
@@ -391,6 +407,8 @@ export default function ChatPage({ channelsOnly = false }: { channelsOnly?: bool
                 <div className="absolute right-0 top-10 z-10 w-44 rounded-lg border border-[#e5e7eb] bg-white p-1 shadow-lg">
                   <button type="button" onClick={() => { setNotice(`${selectedItem?.name} marked unread`); setMoreMenuOpen(false) }} className="w-full rounded-md px-3 py-2 text-left text-[12px] text-[#374151] hover:bg-[#f3f4f6]">Mark as unread</button>
                   <button type="button" onClick={() => { setNotice('Chat details opened'); setMoreMenuOpen(false) }} className="w-full rounded-md px-3 py-2 text-left text-[12px] text-[#374151] hover:bg-[#f3f4f6]">Chat details</button>
+                  <button type="button" onClick={() => { startCall('audio'); setMoreMenuOpen(false) }} className="w-full rounded-md px-3 py-2 text-left text-[12px] text-[#374151] hover:bg-[#f3f4f6] sm:hidden">Start audio call</button>
+                  <button type="button" onClick={() => { startCall('video'); setMoreMenuOpen(false) }} className="w-full rounded-md px-3 py-2 text-left text-[12px] text-[#374151] hover:bg-[#f3f4f6] sm:hidden">Start video call</button>
                 </div>
               ) : null}
             </div>
@@ -407,7 +425,7 @@ export default function ChatPage({ channelsOnly = false }: { channelsOnly?: bool
                     <UserRound size={15} aria-hidden="true" />
                   </div>
                 ) : null}
-                <div className="flex max-w-[72%] flex-col">
+                <div className="flex max-w-[86%] flex-col sm:max-w-[72%]">
                   <p className={['mb-1 text-[11px] font-medium text-[#4b5563]', message.mine ? 'text-right' : ''].join(' ')}>{message.sender}</p>
                   <div
                     className={[
@@ -429,8 +447,8 @@ export default function ChatPage({ channelsOnly = false }: { channelsOnly?: bool
             ))}
           </div>
 
-          <div className="border-t border-[#e5e7eb] bg-white px-4 py-3">
-            <form onSubmit={(event) => { event.preventDefault(); sendMessage() }} className="flex items-center gap-3 rounded-xl border border-[#e5e7eb] bg-[#f9fafb] px-3 py-2">
+          <div className="border-t border-[#e5e7eb] bg-white px-2 py-2 sm:px-4 sm:py-3">
+            <form onSubmit={(event) => { event.preventDefault(); sendMessage() }} className="flex items-center gap-2 rounded-xl border border-[#e5e7eb] bg-[#f9fafb] px-2 py-2 sm:gap-3 sm:px-3">
               <input ref={attachmentInput} type="file" accept="image/*" className="hidden" onChange={(event) => {
                 const file = event.target.files?.[0]
                 if (file) sendImage(file)

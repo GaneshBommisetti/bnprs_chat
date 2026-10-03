@@ -48,8 +48,8 @@ const companyWebsites = [
 
 export default function AppsPage() {
   return (
-    <main className="min-h-full bg-[#f4f6fa] px-5 py-8 text-[#101B3D] sm:px-9 sm:py-10">
-      <div className="mx-auto max-w-6xl">
+    <main className="min-h-full w-full bg-[#f4f6fa] px-4 py-5 text-[#101B3D] sm:px-6 sm:py-6 lg:px-8">
+      <div className="mx-auto flex min-h-full w-full flex-col">
         <p className="text-[10px] font-bold uppercase tracking-[0.12em] text-[#737d8e]">BNPRS WORKSPACE</p>
         <div className="mt-2 flex flex-wrap items-end justify-between gap-4">
           <div>
@@ -60,7 +60,7 @@ export default function AppsPage() {
 
         <section className="mt-5 overflow-hidden rounded-2xl border border-[#dce5f2] bg-white shadow-[0_10px_28px_rgba(16,27,61,0.05)]" aria-labelledby="mission-title">
           <div
-            className="flex flex-col gap-3 bg-[#101b3d] px-6 py-5 text-white sm:flex-row sm:items-center sm:gap-5 sm:px-8 sm:py-6"
+            className="flex min-h-[126px] flex-col justify-center gap-3 bg-[#101b3d] px-6 py-6 text-white sm:min-h-[148px] sm:flex-row sm:items-center sm:gap-5 sm:px-10 sm:py-8"
             style={{ backgroundImage: 'linear-gradient(110deg, #101b3d 0%, #172950 58%, #23406a 100%)' }}
           >
             <div>
@@ -86,7 +86,7 @@ export default function AppsPage() {
                   href={app.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group flex min-h-[88px] items-center gap-4 rounded-xl border border-[#e2e7ef] bg-white px-4 py-4 shadow-[0_4px_14px_rgba(16,27,61,0.03)] transition hover:border-[#cbd5e4] hover:shadow-[0_8px_20px_rgba(16,27,61,0.07)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#f2992f]"
+                  className="group flex min-h-[112px] items-center gap-4 rounded-xl border border-[#e2e7ef] bg-white px-5 py-5 shadow-[0_4px_14px_rgba(16,27,61,0.03)] transition hover:border-[#cbd5e4] hover:shadow-[0_8px_20px_rgba(16,27,61,0.07)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#f2992f]"
                 >
                   <span className={['grid h-12 w-12 shrink-0 place-items-center rounded-xl', app.iconClass].join(' ')}>
                     <AppIcon size={22} />
@@ -103,11 +103,11 @@ export default function AppsPage() {
           </div>
         </section>
 
-        <section className="mt-8" aria-labelledby="company-websites-title">
+        <section className="mt-7 flex flex-1 flex-col" aria-labelledby="company-websites-title">
           <div className="mb-4">
             <h2 id="company-websites-title" className="text-[15px] font-bold">Our websites</h2>
           </div>
-          <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+          <div className="grid flex-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
             {companyWebsites.map((website) => {
               const WebsiteIcon = website.icon
               return (
@@ -116,7 +116,7 @@ export default function AppsPage() {
                   href={website.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group flex min-h-[150px] flex-col rounded-xl border border-[#e2e7ef] bg-white p-4 shadow-[0_4px_14px_rgba(16,27,61,0.03)] transition hover:border-[#cbd5e4] hover:shadow-[0_8px_20px_rgba(16,27,61,0.07)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#f2992f]"
+                  className="group flex min-h-[176px] flex-col rounded-xl border border-[#e2e7ef] bg-white p-5 shadow-[0_4px_14px_rgba(16,27,61,0.03)] transition hover:border-[#cbd5e4] hover:shadow-[0_8px_20px_rgba(16,27,61,0.07)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#f2992f]"
                 >
                   <span className="flex items-start justify-between">
                     <span className={['grid h-12 w-12 place-items-center rounded-xl', website.iconClass].join(' ')}>

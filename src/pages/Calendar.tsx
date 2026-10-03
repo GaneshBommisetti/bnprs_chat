@@ -1,6 +1,5 @@
-import { ArrowRight, CalendarDays, ChevronLeft, ChevronRight, Clock3, UsersRound } from 'lucide-react'
+import { CalendarDays, ChevronLeft, ChevronRight, Clock3, UsersRound } from 'lucide-react'
 import { useMemo, useState } from 'react'
-import { Link } from 'react-router-dom'
 
 import type { Meeting } from '../types'
 
@@ -75,15 +74,6 @@ export default function CalendarPage({ meetings }: CalendarPageProps) {
 
   return (
     <div className="calendar-page">
-      <header className="calendar-header">
-        <div>
-          <p className="calendar-eyebrow">BNPRS · TEAM SCHEDULE</p>
-          <h1>Calendar</h1>
-          <p>{selectedLabel}</p>
-        </div>
-        <Link to="/meetings" className="calendar-meetings-link">All meetings <ArrowRight size={14} /></Link>
-      </header>
-
       <main className="calendar-content">
         <section className="calendar-board" aria-label={`${view} calendar`}>
           <div className="calendar-toolbar">
