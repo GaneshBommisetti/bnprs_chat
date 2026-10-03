@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import { ArrowUpRight, CalendarDays, ChevronRight, Clock3, FileText, MessageCircle, Paperclip, UsersRound, Video } from 'lucide-react'
+import { ArrowUpRight, CalendarDays, ChevronRight, Clock3, FileText, ListFilter, MessageCircle, Paperclip, UsersRound, Video } from 'lucide-react'
 import { Link, useNavigate } from 'react-router-dom'
 
 import { RemoteWorkToggle } from '../components/RemoteWorkToggle'
@@ -59,14 +59,16 @@ export default function Dashboard({
 }: DashboardProps) {
   const navigate = useNavigate()
   const [currentTime, setCurrentTime] = useState(() => Date.now())
+  const [unreadOnly, setUnreadOnly] = useState(false)
   const firstName = profileName === 'You' ? 'Ganesh' : profileName.split(/\s+/)[0]
   const today = new Intl.DateTimeFormat(undefined, { weekday: 'long', month: 'long', day: 'numeric' }).format(new Date())
   const elapsedSeconds = remoteWorkStartedAt === null ? 0 : Math.max(0, Math.floor((currentTime - remoteWorkStartedAt) / 1000))
   const elapsedTime = [Math.floor(elapsedSeconds / 3600), Math.floor((elapsedSeconds % 3600) / 60), elapsedSeconds % 60]
     .map((value) => String(value).padStart(2, '0')).join(':')
-  const filteredConversations = useMemo(() => conversations.filter((conversation) =>
-    `${conversation.name} ${conversation.message}`.toLowerCase().includes(searchQuery.toLowerCase()),
-  ), [searchQuery])
+  const filteredConversations = useMemo(() => conversations.filter((conversation) => {
+    const matchesSearch = `${conversation.name} ${conversation.message}`.toLowerCase().includes(searchQuery.toLowerCase())
+    return matchesSearch && (!unreadOnly || conversation.unread > 0)
+  }), [searchQuery, unreadOnly])
 
   useEffect(() => {
     if (!remoteWorkEnabled || remoteWorkStartedAt === null) return
@@ -108,7 +110,12 @@ export default function Dashboard({
           <section className="overview-section recent-section">
             <div className="section-heading">
               <div><span className="section-kicker">YOUR COMMUNICATION</span><h2>Recent conversations</h2></div>
-              <Link className="text-link" to="/inbox">Open inbox <ArrowUpRight size={14} /></Link>
+              <div className="conversation-actions">
+                <button className={`filter-button ${unreadOnly ? 'is-active' : ''}`} type="button" aria-pressed={unreadOnly} onClick={() => setUnreadOnly((active) => !active)}>
+                  <ListFilter size={14} /> Unread only <span>{conversations.filter((conversation) => conversation.unread > 0).length}</span>
+                </button>
+                <Link className="text-link" to="/inbox">Open inbox <ArrowUpRight size={14} /></Link>
+              </div>
             </div>
             <div className="conversation-list">
               {filteredConversations.map((conversation) => (
@@ -118,7 +125,7 @@ export default function Dashboard({
                   <span className="conversation-meta">{conversation.attachment ? <Paperclip size={14} aria-label="Attachment" /> : null}{conversation.priority ? <span className="priority-mark">{conversation.priority}</span> : null}{conversation.unread ? <span className="unread-count">{conversation.unread}</span> : null}</span>
                 </button>
               ))}
-              {filteredConversations.length === 0 ? <p className="empty-state">No conversations match “{searchQuery}”.</p> : null}
+              {filteredConversations.length === 0 ? <p className="empty-state">{unreadOnly ? 'No unread conversations' : 'No conversations'}{searchQuery ? ` match “${searchQuery}”.` : '.'}</p> : null}
             </div>
           </section>
 

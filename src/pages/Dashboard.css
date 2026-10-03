@@ -25,7 +25,7 @@
   gap: 9px;
   margin: 0 0 10px;
   color: #787f79;
-  font-size: 9px;
+  font-size: 10px;
   font-weight: 700;
   letter-spacing: 0;
   line-height: 1.3;
@@ -40,7 +40,7 @@
 .overview-welcome h1 {
   margin: 0;
   font-family: 'Manrope', sans-serif;
-  font-size: 30px;
+  font-size: 32px;
   font-weight: 700;
   line-height: 1.2;
 }
@@ -48,7 +48,7 @@
 .overview-subtitle {
   margin: 7px 0 0;
   color: #707873;
-  font-size: 13px;
+  font-size: 14px;
 }
 
 .welcome-actions {
@@ -67,7 +67,7 @@
   border: 1px solid #e2e5df;
   background: #fff;
   color: #334139;
-  font-size: 11px;
+  font-size: 12px;
 }
 
 .work-presence > span {
@@ -143,7 +143,7 @@
 
 .metric-label {
   color: #68716d;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 600;
 }
 
@@ -167,7 +167,7 @@
   align-items: center;
   gap: 6px;
   color: #7a827c;
-  font-size: 10px;
+  font-size: 11px;
 }
 
 .metric-foot svg {
@@ -234,7 +234,7 @@
   margin: 0;
   color: #101b3d;
   font-family: 'Manrope', sans-serif;
-  font-size: 16px;
+  font-size: 18px;
   font-weight: 700;
   line-height: 1.35;
 }
@@ -248,7 +248,7 @@
   border: 0;
   background: transparent;
   color: #5b6b60;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 600;
   text-decoration: none;
 }
@@ -256,6 +256,45 @@
 .text-link:hover,
 .subtle-action:hover {
   color: #101b3d;
+}
+
+.conversation-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.filter-button {
+  display: inline-flex;
+  min-height: 34px;
+  align-items: center;
+  gap: 6px;
+  padding: 0 9px;
+  border: 1px solid #e5e7e1;
+  background: #fff;
+  color: #5b6b60;
+  font: inherit;
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.filter-button:hover,
+.filter-button.is-active {
+  border-color: #b8c7b9;
+  background: #f1f6f0;
+  color: #315a3e;
+}
+
+.filter-button span {
+  display: grid;
+  min-width: 19px;
+  height: 19px;
+  place-items: center;
+  background: #e7eee6;
+  color: #315a3e;
+  font-size: 10px;
+  font-variant-numeric: tabular-nums;
 }
 
 .icon-link {
@@ -330,7 +369,7 @@
 .conversation-topline strong {
   overflow: hidden;
   color: #182541;
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 700;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -341,7 +380,7 @@
 .file-row time {
   flex: 0 0 auto;
   color: #919891;
-  font-size: 9px;
+  font-size: 10px;
   font-variant-numeric: tabular-nums;
 }
 
@@ -350,7 +389,7 @@
   overflow: hidden;
   margin-top: 4px;
   color: #777f79;
-  font-size: 10px;
+  font-size: 12px;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -401,7 +440,7 @@
 .schedule-row > time {
   padding-top: 3px;
   color: #707a73;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 600;
   font-variant-numeric: tabular-nums;
 }
@@ -458,7 +497,7 @@
 .schedule-details strong {
   overflow: hidden;
   color: #182541;
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 700;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -469,7 +508,7 @@
   align-items: center;
   gap: 5px;
   color: #88908a;
-  font-size: 9px;
+  font-size: 10px;
 }
 
 .join-meeting {
@@ -497,7 +536,7 @@
   padding-top: 11px;
   border-top: 1px solid #eff0ec;
   color: #5b6b60;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 600;
   text-decoration: none;
 }
@@ -550,7 +589,7 @@
 .activity-content p {
   margin: 0;
   color: #69726c;
-  font-size: 10px;
+  font-size: 12px;
   line-height: 1.55;
 }
 
@@ -577,7 +616,7 @@
   overflow: hidden;
   margin-top: 4px;
   color: #818983;
-  font-size: 10px;
+  font-size: 11px;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -1003,7 +1042,7 @@
   }
 
   .overview-welcome h1 {
-    font-size: 26px;
+    font-size: 28px;
   }
 
   .overview-metrics {
@@ -1026,6 +1065,10 @@
   .overview-grid-main,
   .overview-grid-secondary {
     grid-template-columns: minmax(0, 1fr);
+  }
+
+  .overview-section {
+    padding: 18px;
   }
 
   .spaces-strip {
@@ -1057,12 +1100,12 @@
   }
 
   .overview-welcome h1 {
-    font-size: 23px;
+    font-size: 25px;
   }
 
   .overview-subtitle {
-    max-width: 280px;
-    font-size: 12px;
+    max-width: 100%;
+    font-size: 13px;
   }
 
   .welcome-actions {
@@ -1085,11 +1128,11 @@
   }
 
   .metric-foot {
-    font-size: 9px;
+    font-size: 10px;
   }
 
   .overview-section {
-    padding: 15px 12px;
+    padding: 16px 13px;
   }
 
   .section-heading {
@@ -1097,16 +1140,36 @@
   }
 
   .section-heading h2 {
-    font-size: 15px;
+    font-size: 17px;
   }
 
   .section-heading > .text-link,
   .subtle-action {
-    font-size: 9px;
+    font-size: 10px;
+  }
+
+  .recent-section .section-heading {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .conversation-actions {
+    width: 100%;
+    justify-content: space-between;
+    gap: 8px;
+  }
+
+  .filter-button {
+    min-height: 36px;
+    font-size: 12px;
   }
 
   .conversation-row {
     gap: 8px;
+  }
+
+  .conversation-preview {
+    font-size: 11px;
   }
 
   .conversation-avatar {
